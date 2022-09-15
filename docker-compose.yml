@@ -4,8 +4,10 @@ services:
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:v0.45.0
     container_name: cadvisor
+    command:
+      - "-port=9050"
     ports:
-      - "9050:8080"
+      - "9050:9050"
     network_mode: host
     volumes:
       - /:/rootfs:ro
@@ -19,10 +21,12 @@ services:
   node_exporter:
     image: quay.io/prometheus/node-exporter:v1.3.1
     container_name: node_exporter
+    ports:
+      - 9051:9051
     command:
       - "--path.rootfs=/host"
-    ports:
-      - "9051:9001"
+      - " --web.listen-address=9051"
+
     pid: host
     restart: unless-stopped
     volumes:
